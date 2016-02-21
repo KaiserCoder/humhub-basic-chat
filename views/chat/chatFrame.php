@@ -13,7 +13,7 @@
                         <div id="chatUsers" class="rounded"></div>
                         <div id="chatBottomBar" class="rounded">
                             <div class="tip"></div>
-                            <form id="submitForm" action="<?= Url::toRoute('/humhub-chat/chat/submit') ?>" method="post">
+                            <form id="submitForm" action="<?= Url::toRoute('/ponychat/chat/submit') ?>" method="post">
                                 <div class="input-group">
                                     <input id="chatText" type="text" name="chatText" placeholder="Message ..." class="form-control" maxlength="510">
                                     <span class="input-group-btn">

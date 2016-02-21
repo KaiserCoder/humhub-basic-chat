@@ -1,8 +1,8 @@
 {
-    "id": "basic-chat",
-    "name": "Basic Chat",
-    "description": "Adds Chat Functionality.",
-    "keywords": ["chat"],
+    "id": "ponychat",
+    "name": "PonyChat",
+    "description": "Chat module for PonyCity.",
+    "keywords": ["pony", "city", "chat"],
     "version": "0.1.0",
     "humhub": {
         "minVersion": "0.20"

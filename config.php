@@ -1,20 +1,20 @@
 <?php
 
-namespace humhub\modules\humhubchat;
+namespace humhub\modules\ponychat;
 
 use humhub\widgets\TopMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 
 return [
-    'id' => 'humhub-chat',
-    'class' => 'humhub\modules\humhubchat\Module',
-    'namespace' => 'humhub\modules\humhubchat',
+    'id' => 'ponychat',
+    'class' => 'humhub\modules\ponychat\Module',
+    'namespace' => 'humhub\modules\ponychat',
     'events' => [
         [
             'class' => AdminMenu::className(),
             'event' => AdminMenu::EVENT_INIT,
             'callback' => [
-                'humhub\modules\humhubchat\Events',
+                'humhub\modules\ponychat\Events',
                 'onAdminMenuInit'
             ]
         ],
@@ -22,7 +22,7 @@ return [
             'class' => TopMenu::className(),
             'event' => TopMenu::EVENT_INIT,
             'callback' => [
-                'humhub\modules\humhubchat\Events',
+                'humhub\modules\ponychat\Events',
                 'addChatFrame'
             ]
         ],
@@ -30,7 +30,7 @@ return [
             'class' => TopMenu::className(),
             'event' => TopMenu::EVENT_INIT,
             'callback' => [
-                'humhub\modules\humhubchat\Events',
+                'humhub\modules\ponychat\Events',
                 'onTopMenuInit'
             ]
         ]

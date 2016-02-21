@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\humhubchat\models;
+namespace humhub\modules\ponychat\models;
 
 use Yii;
 
@@ -43,10 +43,10 @@ class UserChatMessage extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('Humhub-chatModule.base', 'ID'),
-            'message' => Yii::t('Humhub-chatModule.base', 'message'),
-            'created_at' => Yii::t('Humhub-chatModule.base', 'created'),
-            'created_by' => Yii::t('Humhub-chatModule.base', 'author')
+            'id' => 'id',
+            'message' => 'message',
+            'created_at' => 'created_at',
+            'created_by' => 'created_by'
         ];
     }
 }

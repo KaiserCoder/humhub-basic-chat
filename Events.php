@@ -1,12 +1,12 @@
 <?php
-namespace humhub\modules\humhubchat;
+namespace humhub\modules\ponychat;
 
 use Yii;
 use yii\helpers\Url;
 
 use humhub\models\Setting;
-use humhub\modules\humhubchat\Assets;
-use humhub\modules\humhubchat\models\UserChatMessage;
+use humhub\modules\ponychat\Assets;
+use humhub\modules\ponychat\models\UserChatMessage;
 
 class Events extends \yii\base\Object
 {
@@ -16,9 +16,9 @@ class Events extends \yii\base\Object
         $event->sender->addItem([
             'label' => 'Chat',
             'sortOrder' => 500,
-            'url' => Url::to(['/humhub-chat/chat']),
+            'url' => Url::to(['/ponychat/chat']),
             'icon' => '<i class="fa fa-weixin"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'humhub-chat' && Yii::$app->controller->id == 'view')
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'ponychat' && Yii::$app->controller->id == 'view')
         ]);
     }
 
@@ -31,15 +31,15 @@ class Events extends \yii\base\Object
         $event->sender->view->registerAssetBundle(Assets::className());
 
         $event->sender->view->registerjsVar('chat_ListUsers', Url::to([
-            '/humhub-chat/chat/users'
+            '/ponychat/chat/users'
         ]));
 
         $event->sender->view->registerjsVar('chat_Submit', Url::to([
-            '/humhub-chat/chat/submit'
+            '/ponychat/chat/submit'
         ]));
 
         $event->sender->view->registerjsVar('chat_GetChats', Url::to([
-            '/humhub-chat/chat/chats'
+            '/ponychat/chat/chats'
         ]));
     }
 
@@ -48,7 +48,7 @@ class Events extends \yii\base\Object
         $controller = $event->sender;
         $controller->stdout("Deleting old chat_messages... ");
         
-        $timeout = Setting::Get('timeout', 'humhubchat');
+        $timeout = Setting::Get('timeout', 'ponychat');
 
         if (!$timeout || $timeout == null || $timeout <= 0) {
             $controller->stdout('skipped! no timeout set.' . PHP_EOL, \yii\helpers\Console::FG_YELLOW);
@@ -72,8 +72,8 @@ class Events extends \yii\base\Object
             'group' => 'manage',
             'label' => 'Pony Chat',
             'icon' => '<i class="fa fa-weixin"></i>',
-            'url' => Url::toRoute('/humhub-chat/admin/index'),
-            'isActive' => Yii::$app->controller->module && Yii::$app->controller->module->id == 'humhub-chat' && Yii::$app->controller->id == 'admin'
+            'url' => Url::toRoute('/ponychat/admin/index'),
+            'isActive' => Yii::$app->controller->module && Yii::$app->controller->module->id == 'ponychat' && Yii::$app->controller->id == 'admin'
         ]);
     }
 }

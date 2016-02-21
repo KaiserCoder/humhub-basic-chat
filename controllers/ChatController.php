@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\humhubchat\controllers;
+namespace humhub\modules\ponychat\controllers;
 
 use Yii;
 use yii\helpers\Url;
@@ -9,7 +9,7 @@ use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
 
 use humhub\modules\user\components\Session;
-use humhub\modules\humhubchat\models\UserChatMessage;
+use humhub\modules\ponychat\models\UserChatMessage;
 
 class ChatController extends Controller
 {
@@ -28,7 +28,7 @@ class ChatController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('chatframe');
+        return $this->render('chatFrame');
     }
 
     /**

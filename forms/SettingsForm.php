@@ -1,5 +1,5 @@
 <?php
-namespace humhub\modules\humhubchat\forms;
+namespace humhub\modules\ponychat\forms;
 
 use Yii;
 use yii\base\Model;

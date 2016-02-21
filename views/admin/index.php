@@ -3,7 +3,7 @@ use humhub\compat\CHtml;
 use humhub\models\Setting;
 use humhub\widgets\DataSaved;
 use humhub\compat\CActiveForm;
-use humhub\modules\humhubchat\controllers\AdminController;
+use humhub\modules\ponychat\controllers\AdminController;
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading"><strong>PonyChat</strong></div>
@@ -12,11 +12,11 @@ use humhub\modules\humhubchat\controllers\AdminController;
 			<?=$form->errorSummary($model); ?>
 			<div class="form-group">
 				<?=$form->labelEx($model, 'theme'); ?>
-				<?=$form->dropDownList($model, 'theme', AdminController::getThemes(), ['class' => 'form-control', 'readonly' => Setting::IsFixed('theme', 'humhubchat')]); ?>
+				<?=$form->dropDownList($model, 'theme', AdminController::getThemes(), ['class' => 'form-control', 'readonly' => Setting::IsFixed('theme', 'ponychat')]); ?>
 			</div>
 			<div class="form-group">
 				<?=$form->labelEx($model, 'timeout'); ?>
-				<?=$form->textField($model, 'timeout', ['class' => 'form-control', 'readonly' => Setting::IsFixed('timeout', 'humhubchat')]); ?>
+				<?=$form->textField($model, 'timeout', ['class' => 'form-control', 'readonly' => Setting::IsFixed('timeout', 'ponychat')]); ?>
 			</div>
 			<p class="help-block">Nombre de jours après lesquels les messages seront supprimés</p>
 			<?= CHtml::submitButton('Sauvegarder', ['class' => 'btn btn-primary']); ?>

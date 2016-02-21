@@ -1,12 +1,12 @@
 <?php
 
-namespace humhub\modules\humhubchat\controllers;
+namespace humhub\modules\ponychat\controllers;
 
 use Yii;
 use humhub\models\Setting;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\humhubchat\forms\SettingsForm;
+use humhub\modules\ponychat\forms\SettingsForm;
 
 class AdminController extends Controller
 {
@@ -26,14 +26,14 @@ class AdminController extends Controller
         $form = new SettingsForm();
         if ($form->load(Yii::$app->request->post())) {
             if ($form->validate()) {
-                Setting::Set('theme', $form->theme, 'humhubchat');
-                Setting::Set('timeout', $form->timeout, 'humhubchat');
+                Setting::Set('theme', $form->theme, 'ponychat');
+                Setting::Set('timeout', $form->timeout, 'ponychat');
                 
                 Yii::$app->session->setFlash('data-saved', 'Sauvegardé');
             }
         } else {
-            $form->theme = Setting::Get('theme', 'humhubchat');
-            $form->timeout = Setting::Get('timeout', 'humhubchat');
+            $form->theme = Setting::Get('theme', 'ponychat');
+            $form->timeout = Setting::Get('timeout', 'ponychat');
         }
         
         return $this->render('index', [

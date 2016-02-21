@@ -1,7 +1,7 @@
 <?php
-use yii\db\Schema;
+
 use yii\db\Migration;
-use humhub\modules\humhubchat\models\UserChatMessage;
+use humhub\modules\ponychat\models\UserChatMessage;
 
 class m151210_181254_create extends Migration
 {

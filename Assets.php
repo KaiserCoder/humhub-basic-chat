@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\humhubchat;
+namespace humhub\modules\ponychat;
 
 use yii\web\AssetBundle;
 use humhub\models\Setting;
@@ -18,7 +18,7 @@ class Assets extends AssetBundle
 
     public function init()
     {
-        $theme = Setting::Get('theme', 'humhubchat');
+        $theme = Setting::Get('theme', 'ponychat');
         if ($theme)
             $this->css = [
                 $theme
