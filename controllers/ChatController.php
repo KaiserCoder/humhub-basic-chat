@@ -50,7 +50,7 @@ class ChatController extends Controller
         foreach ($query->all() as $entry) {
             $response[] = [
                 'id' => $entry->id,
-                'message' => $bbCode->clean($entry->message, BBCodes::OPT_FULL),
+                'message' => $bbCode->clean($entry->message),
                 'author' => [
                     'name' => $entry->user->displayName,
                     'gravatar' => $entry->user->getProfileImage()->getUrl(),
