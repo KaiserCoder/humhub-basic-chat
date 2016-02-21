@@ -67,7 +67,7 @@ class Events extends Object
     public static function onAdminMenuInit(\yii\base\Event $event)
     {
         $event->sender->addItem([
-            'sortOrder' => 650,
+            'sortOrder' => 400,
             'group' => 'manage',
             'label' => 'PonyChat',
             'icon' => '<i class="fa fa-weixin"></i>',

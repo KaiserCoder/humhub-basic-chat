@@ -5,7 +5,6 @@ namespace humhub\modules\ponychat\controllers;
 use Yii;
 use yii\helpers\Url;
 use Dero\BBCodes\BBCodes;
-use yii\helpers\HtmlPurifier;
 
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
@@ -51,7 +50,7 @@ class ChatController extends Controller
         foreach ($query->all() as $entry) {
             $response[] = [
                 'id' => $entry->id,
-                'message' => $bbCode->fullClean($entry->message),
+                'message' => $bbCode->clean($entry->message),
                 'author' => [
                     'name' => $entry->user->displayName,
                     'gravatar' => $entry->user->getProfileImage()->getUrl(),
