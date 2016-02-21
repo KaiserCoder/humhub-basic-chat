@@ -55,7 +55,7 @@ class ChatController extends Controller
                     'name' => $entry->user->displayName,
                     'gravatar' => $entry->user->getProfileImage()->getUrl(),
                     'profile' => Url::toRoute([
-                        '/profile',
+                        '/',
                         'uguid' => $entry->user->guid
                     ])
                 ],
