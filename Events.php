@@ -3,12 +3,12 @@ namespace humhub\modules\ponychat;
 
 use Yii;
 use yii\helpers\Url;
+use yii\base\Object;
 
 use humhub\models\Setting;
-use humhub\modules\ponychat\Assets;
 use humhub\modules\ponychat\models\UserChatMessage;
 
-class Events extends \yii\base\Object
+class Events extends Object
 {
 
     public static function onTopMenuInit($event)
@@ -54,8 +54,7 @@ class Events extends \yii\base\Object
             $controller->stdout('skipped! no timeout set.' . PHP_EOL, \yii\helpers\Console::FG_YELLOW);
             return;
         }
-        
-        // delete old chats
+
         UserChatMessage::deleteAll([
             '<',
             'created_at',
@@ -70,7 +69,7 @@ class Events extends \yii\base\Object
         $event->sender->addItem([
             'sortOrder' => 650,
             'group' => 'manage',
-            'label' => 'Pony Chat',
+            'label' => 'PonyChat',
             'icon' => '<i class="fa fa-weixin"></i>',
             'url' => Url::toRoute('/ponychat/admin/index'),
             'isActive' => Yii::$app->controller->module && Yii::$app->controller->module->id == 'ponychat' && Yii::$app->controller->id == 'admin'

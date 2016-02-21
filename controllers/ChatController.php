@@ -4,6 +4,8 @@ namespace humhub\modules\ponychat\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use Dero\BBCodes\BBCodes;
+use yii\helpers\HtmlPurifier;
 
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
@@ -42,12 +44,14 @@ class ChatController extends Controller
             'id',
             $last_id
         ]);
+
+        $bbCode = new BBCodes();
         
         $response = [];
         foreach ($query->all() as $entry) {
             $response[] = [
                 'id' => $entry->id,
-                'message' => $entry->message,
+                'message' => $bbCode->fullClean($entry->message),
                 'author' => [
                     'name' => $entry->user->displayName,
                     'gravatar' => $entry->user->getProfileImage()->getUrl(),
@@ -73,8 +77,9 @@ class ChatController extends Controller
         if (($message_text = Yii::$app->request->post('chatText', null)) == null) {
             return;
         }
+
         $chat = new UserChatMessage();
-        $chat->message = $message_text;
+        $chat->message = filter_var($message_text, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $chat->save();
     }
 
@@ -87,7 +92,7 @@ class ChatController extends Controller
                 'name' => $user->displayName,
                 'gravatar' => $user->getProfileImage()->getUrl(),
                 'profile' => Url::toRoute([
-                    '/profile',
+                    '/',
                     'uguid' => $user->guid
                 ])
             ];

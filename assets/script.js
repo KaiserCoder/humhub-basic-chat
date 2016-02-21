@@ -193,20 +193,20 @@ var chat = {
 
 				// Setting a timeout for the next request,
 				// depending on the chat activity:
-				var nextRequest = 1000;
+				var nextRequest = 500;
 
 				// 2 seconds
 				if (chat.data.noActivity > 3) {
-					nextRequest = 2000;
+					nextRequest = 600;
 				}
 
 				if (chat.data.noActivity > 10) {
-					nextRequest = 5000;
+					nextRequest = 800;
 				}
 
 				// 15 seconds
 				if (chat.data.noActivity > 20) {
-					nextRequest = 15000;
+					nextRequest = 1000;
 				}
 
 				setTimeout(callback, nextRequest);
