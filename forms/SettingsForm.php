@@ -2,12 +2,11 @@
 namespace humhub\modules\humhubchat\forms;
 
 use Yii;
+use yii\base\Model;
 
-class SettingsForm extends \yii\base\Model
+class SettingsForm extends Model
 {
-
     public $theme;
-
     public $timeout;
 
     public function rules()
@@ -48,8 +47,8 @@ class SettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'theme' => Yii::t('Humhub-chatModule.base', 'theme'),
-            'timeout' => Yii::t('Humhub-chatModule.base', 'timeout')
+            'theme' => 'Theme',
+            'timeout' => 'Timeout'
         ];
     }
 }

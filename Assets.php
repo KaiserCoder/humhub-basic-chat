@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\humhubchat;
 
 use yii\web\AssetBundle;

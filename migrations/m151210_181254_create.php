@@ -10,12 +10,9 @@ class m151210_181254_create extends Migration
     {
         $this->createTable(UserChatMessage::tableName(), [
             'id' => $this->primaryKey(),
-            'author' => $this->string(16)
-                ->notNull(),
-            'gravatar' => $this->string(255)
-                ->notNull(),
-            'text' => $this->string(255)
-                ->notNull(),
+            'author' => $this->string(16)->notNull(),
+            'gravatar' => $this->string(255)->notNull(),
+            'text' => $this->string(255)->notNull(),
             'ts' => 'timestamp NOT NULL default CURRENT_TIMESTAMP'
         ]);
     }

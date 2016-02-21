@@ -1,17 +1,13 @@
 <?php
+
 namespace humhub\modules\humhubchat\models;
 
 use Yii;
 
-/**
- * This is the model class for table "user_chat_message".
- *
- * @property integer $id
- * @property string $message
- * @property string $created_at
- * @property integer $created_by
- */
-class UserChatMessage extends \humhub\components\ActiveRecord
+use humhub\components\ActiveRecord;
+use humhub\modules\user\models\User;
+
+class UserChatMessage extends ActiveRecord
 {
 
     public static function tableName()
@@ -39,7 +35,7 @@ class UserChatMessage extends \humhub\components\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), [
+        return $this->hasOne(User::className(), [
             'id' => 'created_by'
         ]);
     }

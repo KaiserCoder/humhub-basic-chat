@@ -1,21 +1,34 @@
 <?php
+
 namespace humhub\modules\humhubchat\controllers;
 
 use Yii;
-use humhub\modules\User\models\User;
-use humhub\modules\humhubchat\models\UserChatMessage;
 use yii\helpers\Url;
 
-class ChatController extends \humhub\components\Controller
+use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
+
+use humhub\modules\user\components\Session;
+use humhub\modules\humhubchat\models\UserChatMessage;
+
+class ChatController extends Controller
 {
 
     public function behaviors()
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className()
+                'class' => AccessControl::className()
             ]
         ];
+    }
+
+    /**
+     * Main view
+     */
+    public function actionIndex()
+    {
+        return $this->render('chatframe');
     }
 
     /**
@@ -51,13 +64,13 @@ class ChatController extends \humhub\components\Controller
         }
         
         Yii::$app->response->format = 'json';
+
         return $response;
     }
 
     public function actionSubmit()
     {
         if (($message_text = Yii::$app->request->post('chatText', null)) == null) {
-            // if nothing was submitted
             return;
         }
         $chat = new UserChatMessage();
@@ -67,7 +80,7 @@ class ChatController extends \humhub\components\Controller
 
     public function actionUsers()
     {
-        $query = \humhub\modules\user\components\Session::getOnlineUsers();
+        $query = Session::getOnlineUsers();
         $response = [];
         foreach ($query->all() as $user) {
             $response[] = [
@@ -81,10 +94,9 @@ class ChatController extends \humhub\components\Controller
         }
         
         Yii::$app->response->format = 'json';
+
         return [
-            'online' => Yii::t('Humhub-chatModule.base', count($response) == 1 ? '{count} person online' : '{count} people online', [
-                '{count}' => count($response)
-            ]),
+            'online' => count($response) . ' personnes connectée(s)',
             'users' => $response
         ];
     }

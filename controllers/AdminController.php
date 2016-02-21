@@ -1,18 +1,21 @@
 <?php
+
 namespace humhub\modules\humhubchat\controllers;
 
 use Yii;
 use humhub\models\Setting;
-use yii\helpers\Url;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\admin\components\Controller;
+use humhub\modules\humhubchat\forms\SettingsForm;
 
-class AdminController extends \humhub\modules\admin\components\Controller
+class AdminController extends Controller
 {
 
     public function behaviors()
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'adminOnly' => true
             ]
         ];
@@ -20,14 +23,13 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     public function actionIndex()
     {
-        $form = new \humhub\modules\humhubchat\forms\SettingsForm();
+        $form = new SettingsForm();
         if ($form->load(Yii::$app->request->post())) {
             if ($form->validate()) {
                 Setting::Set('theme', $form->theme, 'humhubchat');
                 Setting::Set('timeout', $form->timeout, 'humhubchat');
                 
-                Yii::$app->session->setFlash('data-saved', Yii::t('Humhub-chatModule.base', 'Saved'));
-                // $this->redirect(Url::toRoute('index'));
+                Yii::$app->session->setFlash('data-saved', 'Sauvegardé');
             }
         } else {
             $form->theme = Setting::Get('theme', 'humhubchat');
@@ -42,8 +44,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
     public static function getThemes()
     {
         return [
-            'chat_bright.css' => Yii::t('Humhub-chatModule.base', 'light theme'),
-            'chat_dark.css' => Yii::t('Humhub-chatModule.base', 'dark theme')
+            'chat_bright.css' => 'Light theme',
+            'chat_dark.css' => 'Dark theme'
         ];
     }
 }
