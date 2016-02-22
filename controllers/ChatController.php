@@ -4,7 +4,7 @@ namespace humhub\modules\ponychat\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use Dero\BBCodes\BBCodes;
+use humhub\modules\ponychat\lib\BBCodes;
 
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;

@@ -47,12 +47,12 @@ class Events extends Object
     public static function onDailyCron($event)
     {
         $controller = $event->sender;
-        $controller->stdout("Deleting old chat_messages... ");
+        $controller->stdout('Deleting old chat messages...');
         
         $timeout = Setting::Get('timeout', 'ponychat');
 
         if (!$timeout || $timeout == null || $timeout <= 0) {
-            $controller->stdout('skipped! no timeout set.' . PHP_EOL, \yii\helpers\Console::FG_YELLOW);
+            $controller->stdout('Skipped! No timeout set.' . PHP_EOL, \yii\helpers\Console::FG_YELLOW);
             return;
         }
 
