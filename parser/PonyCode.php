@@ -115,7 +115,7 @@ class PonyCode
     private static function rainbowToHTML($v)
     {
         $result = '';
-	$v[1] = html_entity_decode($v[1]);
+	$v[1] = html_entity_decode($v[1], ENT_QUOTES);
         $string = self::stringSplit($v[1]);
 	$length = count($string);
 
