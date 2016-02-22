@@ -48,7 +48,20 @@ class PonyCode
         return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->str);
     }
 
-    public static function isImage($url)
+    private static function stringSplit($str, $l = 0) {
+        if ($l > 0) {
+            $ret = [];
+            $len = mb_strlen($str, 'UTF-8');
+            for ($i = 0; $i < $len; $i += $l)
+            {
+                $ret[] = mb_substr($str, $i, $l, 'UTF-8');
+            }
+            return $ret;
+        }
+        return preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    private static function isImage($url)
     {
         $params = ['http' => [
             'method' => 'HEAD'
@@ -102,21 +115,13 @@ class PonyCode
     private static function rainbowToHTML($v)
     {
         $result = '';
-        $length = strlen($v[1]);
+	$v[1] = html_entity_decode($v[1]);
+        $string = self::stringSplit($v[1]);
+	$length = count($string);
 
         for ($index = 0; $index < $length; ++$index)
         {
-            if ($v[1][$index] === '&') {
-                $special = $v[1][$index];
-                while ($v[1][$index] !== ';')
-                {
-                    $special .= $v[1][++$index];
-                }
-                $special .= $v[1][++$index];
-                $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $special . '</span>';
-            } else {
-                $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $v[1][$index] . '</span>';
-            }
+            $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $string[$index] . '</span>';
         }
 
         return $result;
