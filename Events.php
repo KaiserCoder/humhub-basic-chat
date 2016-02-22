@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\ponychat;
 
 use Yii;

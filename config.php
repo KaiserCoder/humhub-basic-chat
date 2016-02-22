@@ -3,6 +3,7 @@
 namespace humhub\modules\ponychat;
 
 use humhub\widgets\TopMenu;
+use humhub\commands\CronController;
 use humhub\modules\admin\widgets\AdminMenu;
 
 return [
@@ -32,6 +33,14 @@ return [
             'callback' => [
                 'humhub\modules\ponychat\Events',
                 'onTopMenuInit'
+            ]
+        ],
+        [
+            'class' => CronController::className(),
+            'event' => CronController::EVENT_ON_DAILY_RUN,
+            'callback' => [
+                'humhub\modules\ponychat\Events',
+                'onDailyCron'
             ]
         ]
     ]
