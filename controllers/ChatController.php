@@ -3,8 +3,9 @@
 namespace humhub\modules\ponychat\controllers;
 
 use Yii;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
-use humhub\modules\ponychat\lib\BBCodes;
+use humhub\modules\ponychat\parser\PonyCode;
 
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
@@ -29,7 +30,7 @@ class ChatController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('chatFrame');
+        return $this->render('chatFrame', ['smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley')]);
     }
 
     /**
@@ -44,7 +45,7 @@ class ChatController extends Controller
             $last_id
         ]);
 
-        $bbCode = new BBCodes();
+        $bbCode = new PonyCode();
         
         $response = [];
         foreach ($query->all() as $entry) {

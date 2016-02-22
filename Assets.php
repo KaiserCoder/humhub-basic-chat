@@ -19,10 +19,8 @@ class Assets extends AssetBundle
     public function init()
     {
         $theme = Setting::Get('theme', 'ponychat');
-        if ($theme)
-            $this->css = [
-                $theme
-            ];
+
+        if ($theme) $this->css = [$theme];
         
         $this->sourcePath = dirname(__FILE__) . '/assets';
         parent::init();

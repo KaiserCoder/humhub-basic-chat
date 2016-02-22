@@ -1,8 +1,11 @@
 <?php
 
-namespace humhub\modules\ponychat\lib;
+namespace humhub\modules\ponychat\parser;
 
-class BBCodes
+use Yii;
+use humhub\compat\CHtml;
+
+class PonyCode
 {
     const PATTERN_PHP = '#\[PHP\](.*?)\[\/PHP\]#is';
     const PATTERN_CODE = '#\[CODE(=([a-z]+))?\](.*?)\[\/CODE\]#is';
@@ -19,6 +22,7 @@ class BBCodes
     const PATTERN_COLOR = '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is';
     const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_]+))\[/VIDEO\]@is';
     const PATTERN_RAINBOW = '@\[RAINBOW\](.*)\[/RAINBOW\]@is';
+    const PATTERN_SMILEY = '@:([\w^]+):@';
 
     private static $colors = [
         'ff0000', 'ff8400',
@@ -39,8 +43,52 @@ class BBCodes
         $this->parseColor();
         $this->parseVideo();
         $this->parseRainbow();
+        $this->parseSmiley();
 
         return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->str);
+    }
+
+    public static function isImage($url)
+    {
+        $params = ['http' => [
+            'method' => 'HEAD'
+        ]];
+        $ctx = stream_context_create($params);
+        $fp = @fopen($url, 'rb', false, $ctx);
+        if (!$fp) return false;
+
+        $meta = stream_get_meta_data($fp);
+        if (!$meta) {
+            fclose($fp);
+            return false;
+        }
+
+        $wrapper_data = $meta["wrapper_data"];
+        if (is_array($wrapper_data)) {
+            foreach(array_keys($wrapper_data) as $hh)
+            {
+                if (substr($wrapper_data[$hh], 0, 19) == "Content-Type: image") {
+                    fclose($fp);
+                    return true;
+                }
+            }
+        }
+
+        fclose($fp);
+        return false;
+    }
+
+    private function parseSmiley()
+    {
+        while (preg_match(self::PATTERN_SMILEY, $this->str))
+        {
+            $this->str = preg_replace_callback(self::PATTERN_SMILEY, [static::class, 'smileyToHTML'], $this->str);
+        }
+    }
+
+    private static function smileyToHTML($v)
+    {
+        return CHtml::img(Yii::getAlias('@web') . '/img/smiley/' . $v[1] . '.png', ['alt' => $v[1], 'class' => 'smiley']);
     }
 
     private function parseRainbow()
@@ -66,7 +114,8 @@ class BBCodes
 
     private function parseVideo()
     {
-        while (preg_match(self::PATTERN_VIDEO, $this->str)) {
+        while (preg_match(self::PATTERN_VIDEO, $this->str))
+        {
             $this->str = preg_replace_callback(self::PATTERN_VIDEO, [static::class, 'videoToHTML'], $this->str);
         }
     }
@@ -78,7 +127,8 @@ class BBCodes
 
     private function parseColor()
     {
-        while (preg_match(self::PATTERN_COLOR, $this->str)) {
+        while (preg_match(self::PATTERN_COLOR, $this->str))
+        {
             $this->str = preg_replace_callback(self::PATTERN_COLOR, [static::class, 'colorToHTML'], $this->str);
         }
     }
@@ -101,7 +151,8 @@ class BBCodes
 
     private function parseBase()
     {
-        while (preg_match(self::PATTERN_BASE, $this->str)) {
+        while (preg_match(self::PATTERN_BASE, $this->str))
+        {
             $this->str = preg_replace_callback(self::PATTERN_BASE, [static::class, 'baseToHTML'], $this->str);
         }
     }
@@ -110,7 +161,8 @@ class BBCodes
     {
         if (preg_match_all(self::PATTERN_URL, $this->str, $matches)) {
             $URLReplace = [];
-            foreach ($matches[0] as $k => $v) {
+            foreach ($matches[0] as $k => $v)
+            {
                 if (empty($matches[2][$k])) {
                     $display = self::shortenURL($matches[3][$k]);
                     $url = $matches[3][$k];
@@ -140,14 +192,20 @@ class BBCodes
     {
         if (preg_match_all(self::PATTERN_IMAGE, $this->str, $matches)) {
             $IMGReplace = [];
-            foreach ($matches[0] as $k => $v) {
+            foreach ($matches[0] as $k => $v)
+            {
                 if (empty($matches[2][$k])) {
                     $url = $matches[3][$k];
                 }
                 else {
                     $url = $matches[2][$k];
                 }
-                $IMGReplace[$v] = '<img src="' . $url . '" alt="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" title="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" />';
+
+                if (self::isImage($url)) {
+                    $IMGReplace[$v] = '<img src="' . $url . '" alt="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" title="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" />';
+                } else {
+                    $IMGReplace[$v] = '<img src="ponyknowscsrf" alt="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" title="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" />';
+                }
             }
             $this->str = strtr($this->str, $IMGReplace);
         }
@@ -157,7 +215,8 @@ class BBCodes
     {
         if (preg_match_all(self::PATTERN_QUOTE, $this->str, $matches)) {
             $QUOTEReplace = [];
-            foreach ($matches[0] as $k => $v) {
+            foreach ($matches[0] as $k => $v)
+            {
                 $QUOTEFind[$k] = $v;
                 if (empty($matches[2][$k])) {
                     $by = '';

@@ -1,4 +1,7 @@
-<?php use yii\helpers\Url; ?>
+<?php
+use yii\helpers\Url;
+use humhub\compat\CHtml;
+?>
 
 <div class="container">
     <div class="row">
@@ -27,6 +30,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="panel panel-default">
+                <?php foreach ($smileys as $smiley): ?>
+                    <?php $base = basename($smiley) ?>
+                    <a href="javascript:smiley(':<?= str_replace('.png', null, $base) ?>:')">
+                        <?= CHtml::img(Yii::getAlias('@web') . '/img/smiley/' . $base, ['alt' => $base, 'class' => 'smiley']) ?>
+                    </a>
+                <?php endforeach ?>
             </div>
         </div>
     </div>
