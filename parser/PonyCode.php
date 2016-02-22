@@ -63,11 +63,11 @@ class PonyCode
             return false;
         }
 
-        $wrapper_data = $meta["wrapper_data"];
+        $wrapper_data = $meta['wrapper_data'];
         if (is_array($wrapper_data)) {
             foreach(array_keys($wrapper_data) as $hh)
             {
-                if (substr($wrapper_data[$hh], 0, 19) == "Content-Type: image") {
+                if (substr($wrapper_data[$hh], 0, 19) == 'Content-Type: image') {
                     fclose($fp);
                     return true;
                 }
@@ -106,7 +106,17 @@ class PonyCode
 
         for ($index = 0; $index < $length; ++$index)
         {
-            $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $v[1][$index] . '</span>';
+            if ($v[1][$index] === '&') {
+                $special = $v[1][$index];
+                while ($v[1][$index] !== ';')
+                {
+                    $special .= $v[1][++$index];
+                }
+                $special .= $v[1][++$index];
+                $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $special . '</span>';
+            } else {
+                $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $v[1][$index] . '</span>';
+            }
         }
 
         return $result;
