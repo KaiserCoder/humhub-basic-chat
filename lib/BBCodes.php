@@ -18,6 +18,13 @@ class BBCodes
     const PATTERN_LINK = '#((http|ftp)s?://)?(([a-z][a-z0-9-]*\.)+)?[a-z][a-z0-9-]*\.([a-z]{2,6})(/[^\s]*)?#is';
     const PATTERN_COLOR = '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is';
     const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_]+))\[/VIDEO\]@is';
+    const PATTERN_RAINBOW = '@\[RAINBOW\](.*)\[/RAINBOW\]@is';
+
+    private static $colors = [
+        'ff0000', 'ff8400',
+        'ffea00', '00ff06',
+        '0078ff', 'a800ff'
+    ];
 
     private $str;
 
@@ -31,11 +38,33 @@ class BBCodes
         $this->parseImage();
         $this->parseColor();
         $this->parseVideo();
+        $this->parseRainbow();
 
         $this->str = nl2br($this->str);
         $this->str = preg_replace('#<br( /)?>\s*<br( /)?>#', '</p><p>', $this->str);
 
         return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->str);
+    }
+
+    private function parseRainbow()
+    {
+        while (preg_match(self::PATTERN_RAINBOW, $this->str))
+        {
+            $this->str = preg_replace_callback(self::PATTERN_RAINBOW, [static::class, 'rainbowToHTML'], $this->str);
+        }
+    }
+
+    private static function rainbowToHTML($v)
+    {
+        $result = '<p>';
+        $length = strlen($v[1]);
+
+        for ($index = 0; $index < $length; ++$index)
+        {
+            $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $v[1][$index] . '</span>';
+        }
+
+        return $result . '</p>';
     }
 
     private function parseVideo()
