@@ -70,6 +70,10 @@ img.smiley {
     max-height: 50px;
 }
 
+.smileys {
+    text-align: justify;
+}
+
 .chat .time {
   color: #111111;
   position: absolute;

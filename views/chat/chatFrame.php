@@ -18,7 +18,7 @@ use humhub\compat\CHtml;
                             <div class="tip"></div>
                             <form id="submitForm" action="<?= Url::toRoute('/ponychat/chat/submit') ?>" method="post">
                                 <div class="input-group">
-                                    <input id="chatText" type="text" name="chatText" placeholder="Message ..." class="form-control" maxlength="510">
+                                    <input id="chatText" type="text" name="chatText" placeholder="Message ..." class="form-control" autocomplete="off" maxlength="510">
                                     <span class="input-group-btn">
                                       <button type="submit" value="Submit" class="btn btn-primary btn-flat">
                                           Envoyer
@@ -31,7 +31,7 @@ use humhub\compat\CHtml;
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default smileys">
                 <?php foreach ($smileys as $smiley): ?>
                     <?php $base = basename($smiley) ?>
                     <a href="javascript:smiley(':<?= str_replace('.png', null, $base) ?>:')">
