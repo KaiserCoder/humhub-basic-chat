@@ -56,8 +56,8 @@
 }
 
 .chat img {
-  display: block;
-  visibility: hidden;
+    display: block;
+    max-height: 200px;
 }
 
 .chat .time {
