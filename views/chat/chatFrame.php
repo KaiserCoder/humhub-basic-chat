@@ -31,3 +31,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    var smiley = function(smiley) {
+        var chatText = $('#chatText');
+        chatText.val(chatText.val() + smiley);
+    };
+</script>

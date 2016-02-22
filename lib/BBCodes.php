@@ -40,9 +40,6 @@ class BBCodes
         $this->parseVideo();
         $this->parseRainbow();
 
-        $this->str = nl2br($this->str);
-        $this->str = preg_replace('#<br( /)?>\s*<br( /)?>#', '</p><p>', $this->str);
-
         return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->str);
     }
 
@@ -56,7 +53,7 @@ class BBCodes
 
     private static function rainbowToHTML($v)
     {
-        $result = '<p>';
+        $result = '';
         $length = strlen($v[1]);
 
         for ($index = 0; $index < $length; ++$index)
@@ -64,7 +61,7 @@ class BBCodes
             $result .= '<span style="color:#' . self::$colors[$index % count(self::$colors)] . '">' . $v[1][$index] . '</span>';
         }
 
-        return $result . '</p>';
+        return $result;
     }
 
     private function parseVideo()
@@ -88,7 +85,7 @@ class BBCodes
 
     private static function colorToHTML($v)
     {
-        return '<p style="color:' . $v[1] . '">' . $v[2] . '</p>';
+        return '<span style="color:' . $v[1] . '">' . $v[2] . '</span>';
     }
 
     private static function baseToHTML($v)
