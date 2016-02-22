@@ -17,7 +17,7 @@ class BBCodes
     const PATTERN_LIST = '@\s*\[LIST\](.*)\[/LIST\]\s*@is';
     const PATTERN_LINK = '#((http|ftp)s?://)?(([a-z][a-z0-9-]*\.)+)?[a-z][a-z0-9-]*\.([a-z]{2,6})(/[^\s]*)?#is';
     const PATTERN_COLOR = '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is';
-    const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w]+))\[/VIDEO\]@is';
+    const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_]+))\[/VIDEO\]@is';
 
     private $str;
 
