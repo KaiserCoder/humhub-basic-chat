@@ -2,6 +2,7 @@
 
 namespace humhub\modules\ponychat\controllers;
 
+use humhub\modules\user\components\User;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\helpers\Url;
@@ -86,6 +87,7 @@ class ChatController extends Controller
     public function actionUsers()
     {
         $query = Session::getOnlineUsers();
+
         $response = [];
         foreach ($query->all() as $user) {
             $response[] = [

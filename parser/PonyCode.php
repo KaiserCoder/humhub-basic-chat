@@ -2,20 +2,18 @@
 
 namespace humhub\modules\ponychat\parser;
 
-use Yii;
-use humhub\compat\CHtml;
-
 class PonyCode
 {
-    const PATTERN_URL = '#\[URL(=(.*?))?\](.*?)\[\/URL\]#i';
-    const PATTERN_IMAGE = '#\[IMG(=(.*?))?\](.*?)\[\/IMG\]#i';
-    const PATTERN_QUOTE = '#\[QUOTE(=(.*?))?\](.*?)\[\/QUOTE\]#i';
-    const PATTERN_BASE = '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@i';
-    const PATTERN_COLOR = '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is';
-    const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_\-]+))\[/VIDEO\]@is';
-    const PATTERN_RAINBOW = '@\[RAINBOW\](.*)\[/RAINBOW\]@is';
-    const PATTERN_SMILEY = '@:([\w^]+):@';
-    const PATTERN_DICTATOR = '@(HITLER|FUHRER|MUSOLINI|STALIN|MAO|KIM([\s\-]+)JUNG([\s\-]+)HUN|KIM([\s\-]+)IL([\s\-]+)SUNG|VALLS)@i';
+    private static $patterns = [
+        'dictatorToHTML' => '@(HITLER|FUHRER|MUSOLINI|STALIN|MAO|KIM([\s\-]+)JUNG([\s\-]+)HUN|KIM([\s\-]+)IL([\s\-]+)SUNG|VALLS)@is',
+        'videoToHTML'    => '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_\-]+))\[/VIDEO\]@is',
+        'baseToHTML'     => '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@is',
+        'colorToHTML'    => '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is',
+        'rainbowToHTML'  => '@\[RAINBOW\](.*)\[/RAINBOW\]@is',
+        'imageToHTML'    => '@\[IMG\](.*?)\[\/IMG\]@is',
+        'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
+        'smileyToHTML'   => '@:([\w^]+):@'
+    ];
 
     private static $colors = [
         'ff0000', 'ff8400',
@@ -23,26 +21,41 @@ class PonyCode
         '0078ff', 'a800ff'
     ];
 
-    private $str;
+    private $string;
 
     public function clean($input)
     {
-        $this->str = $input;
+        $this->string = $input;
 
-        $this->parseBase();
-        $this->parseURL();
-        $this->parseQuote();
-        $this->parseImage();
-        $this->parseColor();
-        $this->parseVideo();
-        $this->parseRainbow();
-        $this->parseSmiley();
-        $this->parseDictator();
+        foreach (self::$patterns as $method => $regex)
+        {
+            $this->parse($regex, [static::class, $method]);
+        }
 
-        return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->str);
+        return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->string);
     }
 
-    private static function stringSplit($str, $l = 0) {
+    private function parse($pattern, array $callback)
+    {
+        while (preg_match($pattern, $this->string))
+        {
+            $this->string = preg_replace_callback($pattern, $callback, $this->string);
+        }
+    }
+
+    private static function shortenURL($input)
+    {
+        $output = strtolower($input);
+        $output = preg_replace('@^(http|ftp)s?://@', null, $output);
+        if (strlen($output) > 50) {
+            $output = substr($output, 0, strpos($output, '/') + 5) . '...';
+        }
+
+        return $output;
+    }
+
+    private static function stringSplit($str, $l = 0)
+    {
         if ($l > 0) {
             $ret = [];
             $len = mb_strlen($str, 'UTF-8');
@@ -85,46 +98,23 @@ class PonyCode
         return false;
     }
 
-    private function parseDictator()
+    private static function dictatorToHTML($match)
     {
-        while (preg_match(self::PATTERN_DICTATOR, $this->str))
-        {
-            $this->str = preg_replace_callback(self::PATTERN_DICTATOR, [static::class, 'dictatorToHTML'], $this->str);
-        }
-    }
-
-    private static function dictatorToHTML($v)
-    {
+        unset($match);
         return 'Sombra';
     }
 
-    private function parseSmiley()
+    private static function smileyToHTML($match)
     {
-        while (preg_match(self::PATTERN_SMILEY, $this->str))
-        {
-            $this->str = preg_replace_callback(self::PATTERN_SMILEY, [static::class, 'smileyToHTML'], $this->str);
-        }
+        return '<img src="' . \Yii::getAlias('@web') . '/img/smiley/' . $match[1] . '.png' . '" alt="' . $match[1] . '" class="smiley"/>';
     }
 
-    private static function smileyToHTML($v)
+    private static function rainbowToHTML($match)
     {
-        return CHtml::img(Yii::getAlias('@web') . '/img/smiley/' . $v[1] . '.png', ['alt' => $v[1], 'class' => 'smiley']);
-    }
-
-    private function parseRainbow()
-    {
-        while (preg_match(self::PATTERN_RAINBOW, $this->str))
-        {
-            $this->str = preg_replace_callback(self::PATTERN_RAINBOW, [static::class, 'rainbowToHTML'], $this->str);
-        }
-    }
-
-    private static function rainbowToHTML($v)
-    {
-        $result = '';
-	    $v[1] = html_entity_decode($v[1], ENT_QUOTES);
-        $string = self::stringSplit($v[1]);
+	    $match[1] = html_entity_decode($match[1], ENT_QUOTES);
+        $string = self::stringSplit($match[1]);
 	    $length = count($string);
+        $result = '';
 
         for ($index = 0; $index < $length; ++$index)
         {
@@ -134,124 +124,39 @@ class PonyCode
         return $result;
     }
 
-    private function parseVideo()
+    private static function videoToHTML($match)
     {
-        while (preg_match(self::PATTERN_VIDEO, $this->str))
-        {
-            $this->str = preg_replace_callback(self::PATTERN_VIDEO, [static::class, 'videoToHTML'], $this->str);
-        }
+        return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $match[2] . '" frameborder="0" allowfullscreen></iframe>';
     }
 
-    private static function videoToHTML($v)
+    private static function colorToHTML($match)
     {
-        return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $v[2] . '" frameborder="0" allowfullscreen></iframe>';
+        return '<span style="color:' . $match[1] . '">' . $match[2] . '</span>';
     }
 
-    private function parseColor()
+    private static function baseToHTML($match)
     {
-        while (preg_match(self::PATTERN_COLOR, $this->str))
-        {
-            $this->str = preg_replace_callback(self::PATTERN_COLOR, [static::class, 'colorToHTML'], $this->str);
-        }
-    }
-
-    private static function colorToHTML($v)
-    {
-        return '<span style="color:' . $v[1] . '">' . $v[2] . '</span>';
-    }
-
-    private static function baseToHTML($v)
-    {
-        $t = strtolower($v[1]);
-        switch ($t) {
+        $char = strtolower($match[1]);
+        switch ($char) {
             case 'b':
-                return "<strong>$v[2]</strong>";
+                return '<strong>' . $match[2] . '</strong>';
             default:
-                return "<$v[1]>$v[2]</$v[1]>";
+                return '<' . $char . '>' . $match[2] . '</' . $char . '>';
         }
     }
 
-    private function parseBase()
+    private static function urlToHTML($match)
     {
-        while (preg_match(self::PATTERN_BASE, $this->str))
-        {
-            $this->str = preg_replace_callback(self::PATTERN_BASE, [static::class, 'baseToHTML'], $this->str);
-        }
+        return '<a href="' . $match[1] . '" target="_blank">' . self::shortenURL($match[1]) . '</a>';
     }
 
-    private function parseURL()
+    private static function imageToHTML($match)
     {
-        if (preg_match_all(self::PATTERN_URL, $this->str, $matches)) {
-            $URLReplace = [];
-            foreach ($matches[0] as $k => $v)
-            {
-                if (empty($matches[2][$k])) {
-                    $display = self::shortenURL($matches[3][$k]);
-                    $url = $matches[3][$k];
-                }
-                else {
-                    $display = $matches[3][$k];
-                    $url = $matches[2][$k];
-                }
-                $URLReplace[$v] = '<a href="' . $url . '" target="_blank">' . $display . '</a>';
-            }
-            $this->str = strtr($this->str, $URLReplace);
-        }
-    }
-
-    public static function shortenURL($input)
-    {
-        $output = strtolower($input);
-        $output = preg_replace("#^(http|ftp)s?://#", "", $output);
-        if (strlen($output) > 50) {
-            $output = substr($output, 0, strpos($output, "/") + 5) . '...';
+        if (!self::isImage($match[1])) {
+            $match[1] = 'ponyKnowsCSRF';
         }
 
-        return $output;
-    }
-
-    private function parseImage()
-    {
-        if (preg_match_all(self::PATTERN_IMAGE, $this->str, $matches)) {
-            $IMGReplace = [];
-            foreach ($matches[0] as $k => $v)
-            {
-                if (empty($matches[2][$k])) {
-                    $url = $matches[3][$k];
-                }
-                else {
-                    $url = $matches[2][$k];
-                }
-
-                if (self::isImage($url)) {
-                    $IMGReplace[$v] = '<img src="' . $url . '" alt="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" title="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" />';
-                } else {
-                    $IMGReplace[$v] = '<img src="ponyknowscsrf" alt="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" title="' . ($url != $matches[3][$k] ? $matches[3][$k] : '') . '" />';
-                }
-            }
-            $this->str = strtr($this->str, $IMGReplace);
-        }
-    }
-
-    private function parseQuote()
-    {
-        if (preg_match_all(self::PATTERN_QUOTE, $this->str, $matches)) {
-            $QUOTEReplace = [];
-            foreach ($matches[0] as $k => $v)
-            {
-                $QUOTEFind[$k] = $v;
-                if (empty($matches[2][$k])) {
-                    $by = '';
-                    $body = $matches[3][$k];
-                }
-                else {
-                    $by = '<span class="bbcodes_quote_author">Quote by: <strong>' . $matches[2][$k] . '</strong></span>' . "\n";
-                    $body = $matches[3][$k];
-                }
-                $QUOTEReplace[$v] = '<div class="bbcodes_quote">' . $by . $body . '</div>';
-            }
-            $this->str = strtr($this->str, $QUOTEReplace);
-        }
+        return '<img src="' . $match[1] . '" alt="' . $match[1] . '" title="' . $match[1] . '"/>';
     }
 
 }
