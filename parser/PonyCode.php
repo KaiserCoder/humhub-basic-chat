@@ -5,7 +5,7 @@ namespace humhub\modules\ponychat\parser;
 class PonyCode
 {
     private static $patterns = [
-        'dictatorToHTML' => '@(HITLER|FUHRER|MUSOLINI|STALIN|MAO|KIM([\s\-]+)JUNG([\s\-]+)HUN|KIM([\s\-]+)IL([\s\-]+)SUNG|VALLS)@is',
+        'dictatorToHTML' => '@(HITLER|FUHRER|MUSOLINI|STALIN|MAO|KIM([\s\-]+)JUNG([\s\-]+)UN|KIM([\s\-]+)IL([\s\-]+)SUNG|VALLS)@is',
         'videoToHTML'    => '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_\-]+))\[/VIDEO\]@is',
         'baseToHTML'     => '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@is',
         'colorToHTML'    => '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is',
