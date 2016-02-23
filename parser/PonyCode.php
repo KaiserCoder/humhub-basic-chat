@@ -7,22 +7,15 @@ use humhub\compat\CHtml;
 
 class PonyCode
 {
-    const PATTERN_PHP = '#\[PHP\](.*?)\[\/PHP\]#is';
-    const PATTERN_CODE = '#\[CODE(=([a-z]+))?\](.*?)\[\/CODE\]#is';
-    const PATTERN_URL_BLOCK = '#\[URLS\](.*?)\[\/URLS\]#is';
     const PATTERN_URL = '#\[URL(=(.*?))?\](.*?)\[\/URL\]#i';
     const PATTERN_IMAGE = '#\[IMG(=(.*?))?\](.*?)\[\/IMG\]#i';
     const PATTERN_QUOTE = '#\[QUOTE(=(.*?))?\](.*?)\[\/QUOTE\]#i';
-    const PATTERN_NO_PARSE = '#\[NOPARSE\](.*?)\[\/NOPARSE\]#is';
-    const PATTERN_TITLE = '@\s*\[((SUB)?TITLE)\](.*)\[/\1\]\s*@i';
     const PATTERN_BASE = '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@i';
-    const PATTERN_ITEM = '@\s*\[ITEM\](.*)\[/ITEM\]\s*@i';
-    const PATTERN_LIST = '@\s*\[LIST\](.*)\[/LIST\]\s*@is';
-    const PATTERN_LINK = '#((http|ftp)s?://)?(([a-z][a-z0-9-]*\.)+)?[a-z][a-z0-9-]*\.([a-z]{2,6})(/[^\s]*)?#is';
     const PATTERN_COLOR = '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is';
     const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_\-]+))\[/VIDEO\]@is';
     const PATTERN_RAINBOW = '@\[RAINBOW\](.*)\[/RAINBOW\]@is';
     const PATTERN_SMILEY = '@:([\w^]+):@';
+    const PATTERN_DICTATOR = '@(HITLER|FUHRER|STALIN|MAO)@i';
 
     private static $colors = [
         'ff0000', 'ff8400',
@@ -44,6 +37,7 @@ class PonyCode
         $this->parseVideo();
         $this->parseRainbow();
         $this->parseSmiley();
+        $this->parseDictator();
 
         return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->str);
     }
@@ -91,6 +85,19 @@ class PonyCode
         return false;
     }
 
+    private function parseDictator()
+    {
+        while (preg_match(self::PATTERN_DICTATOR, $this->str))
+        {
+            $this->str = preg_replace_callback(self::PATTERN_DICTATOR, [static::class, 'dictatorToHTML'], $this->str);
+        }
+    }
+
+    private static function dictatorToHTML($v)
+    {
+        return 'Sombra';
+    }
+
     private function parseSmiley()
     {
         while (preg_match(self::PATTERN_SMILEY, $this->str))
@@ -115,9 +122,9 @@ class PonyCode
     private static function rainbowToHTML($v)
     {
         $result = '';
-	$v[1] = html_entity_decode($v[1], ENT_QUOTES);
+	    $v[1] = html_entity_decode($v[1], ENT_QUOTES);
         $string = self::stringSplit($v[1]);
-	$length = count($string);
+	    $length = count($string);
 
         for ($index = 0; $index < $length; ++$index)
         {
