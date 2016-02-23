@@ -153,7 +153,7 @@ class PonyCode
     private static function imageToHTML($match)
     {
         if (!self::isImage($match[1])) {
-            $match[1] = 'ponyKnowsCSRF';
+            $match[1] = \Yii::getAlias('@web') . '/img/csrf.jpg';
         }
 
         return '<img src="' . $match[1] . '" alt="' . $match[1] . '" title="' . $match[1] . '"/>';
