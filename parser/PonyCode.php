@@ -15,7 +15,7 @@ class PonyCode
     const PATTERN_VIDEO = '@\[VIDEO\](https\:\/\/www\.youtube\.com\/watch\?v=([\w\_\-]+))\[/VIDEO\]@is';
     const PATTERN_RAINBOW = '@\[RAINBOW\](.*)\[/RAINBOW\]@is';
     const PATTERN_SMILEY = '@:([\w^]+):@';
-    const PATTERN_DICTATOR = '@(HITLER|FUHRER|MUSOLINI|STALIN|MAO|KIM([\s]+)JUNG([\s]+)HUN|KIM([\s]+)IL([\s\-]+)SUNG|VALLS)@i';
+    const PATTERN_DICTATOR = '@(HITLER|FUHRER|MUSOLINI|STALIN|MAO|KIM([\s\-]+)JUNG([\s\-]+)HUN|KIM([\s\-]+)IL([\s\-]+)SUNG|VALLS)@i';
 
     private static $colors = [
         'ff0000', 'ff8400',
