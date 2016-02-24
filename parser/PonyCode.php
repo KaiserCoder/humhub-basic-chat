@@ -21,25 +21,25 @@ class PonyCode
         '0078ff', 'a800ff'
     ];
 
-    private $string;
+    private static $string;
 
-    public function clean($input)
+    public static function clean($input)
     {
-        $this->string = $input;
+        self::$string = $input;
 
         foreach (self::$patterns as $method => $regex)
         {
-            $this->parse($regex, [static::class, $method]);
+            self::parse($regex, [static::class, $method]);
         }
 
-        return preg_replace('#javascript([\s]*):#', 'ponyscript:', $this->string);
+        return preg_replace('#javascript([\s]*):#', 'ponyscript:', self::$string);
     }
 
-    private function parse($pattern, array $callback)
+    private static function parse($pattern, array $callback)
     {
-        while (preg_match($pattern, $this->string))
+        while (preg_match($pattern, self::$string))
         {
-            $this->string = preg_replace_callback($pattern, $callback, $this->string);
+            self::$string = preg_replace_callback($pattern, $callback, self::$string);
         }
     }
 

@@ -45,14 +45,12 @@ class ChatController extends Controller
             'id',
             $last_id
         ]);
-
-        $bbCode = new PonyCode();
         
         $response = [];
         foreach ($query->all() as $entry) {
             $response[] = [
                 'id' => $entry->id,
-                'message' => $bbCode->clean($entry->message),
+                'message' => $entry->message,
                 'author' => [
                     'name' => $entry->user->displayName,
                     'gravatar' => $entry->user->getProfileImage()->getUrl(),
@@ -79,8 +77,10 @@ class ChatController extends Controller
             return;
         }
 
+        $clean = filter_var($message_text, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         $chat = new UserChatMessage();
-        $chat->message = filter_var($message_text, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $chat->message = PonyCode::clean($clean);
         $chat->save();
     }
 
