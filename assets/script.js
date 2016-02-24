@@ -160,7 +160,13 @@ var chat = {
 			chat.data.chatElem.append(markup);
 
 		chat.data.scrollpaneAPI.resize();
-		chat.data.scrollpaneAPI.doScrollTop(chat.data.chatElem.prop('scrollHeight'), 5);
+
+        var chatLine = $('.chat');
+        var chatLineHolder = $('#chatLineHolder');
+
+        if ((chatLineHolder.scrollTop() + chatLineHolder.height() + chatLine.last().height() + 50) >= chatLineHolder[0].scrollHeight) {
+            chat.data.scrollpaneAPI.doScrollTop(chat.data.chatElem.prop('scrollHeight'), 5);
+        }
 	},
 
 	// This method requests the latest chats
