@@ -10,6 +10,7 @@ class PonyCode
         'baseToHTML'     => '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@is',
         'colorToHTML'    => '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is',
         'rainbowToHTML'  => '@\[RAINBOW\](.*)\[/RAINBOW\]@is',
+	'mirrorToHTML'   => '@\[MIRROR\](.*?)\[\/MIRROR\]@is',
         'imageToHTML'    => '@\[IMG\](.*?)\[\/IMG\]@is',
         'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
         'smileyToHTML'   => '@:([\w^]+):@'
@@ -96,6 +97,11 @@ class PonyCode
 
         fclose($fp);
         return false;
+    }
+
+    private static function mirrorToHTML($match)
+    {
+        return '<span class="mirror">' . $match[1] . '</span>';
     }
 
     private static function dictatorToHTML($match)

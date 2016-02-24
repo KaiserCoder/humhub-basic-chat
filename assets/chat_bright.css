@@ -61,6 +61,25 @@
     max-width: 400px;
 }
 
+.mirror img {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.mirror {
+    -webkit-transform:rotateY(180deg);
+    -moz-transform:rotateY(180deg);
+    -o-transform:rotateY(180deg);
+    -ms-transform:rotateY(180deg);
+     transform:rotateY(180deg);
+     unicode-bidi:bidi-override;
+     direction:rtl;
+}
+
 .chat img.smiley {
     display: inline-block;
 }
