@@ -13,7 +13,8 @@ class PonyCode
 	'mirrorToHTML'   => '@\[MIRROR\](.*?)\[\/MIRROR\]@is',
         'imageToHTML'    => '@\[IMG\](.*?)\[\/IMG\]@is',
         'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
-        'smileyToHTML'   => '@:([\w^]+):@'
+        'smileyToHTML'   => '@:([\w^]+):@',
+        'shiraToHTML'    => '@ShiraCat@is'
     ];
 
     private static $colors = [
@@ -97,6 +98,11 @@ class PonyCode
 
         fclose($fp);
         return false;
+    }
+
+    private static function shiraToHTML($match)
+    {
+        return '<img src="' . \Yii::getAlias('@web') . '/img/shira.jpg" class="smiley"/>';
     }
 
     private static function mirrorToHTML($match)
