@@ -164,7 +164,7 @@ var chat = {
         var chatLine = $('.chat');
         var chatLineHolder = $('#chatLineHolder');
 
-        if ((chatLineHolder.scrollTop() + chatLineHolder.height() + chatLine.last().height() + 50) >= chatLineHolder[0].scrollHeight) {
+        if ((chatLineHolder.scrollTop() + chatLineHolder.height() + 500) >= chatLineHolder[0].scrollHeight || chat.data.lastID === 0) {
             chat.data.scrollpaneAPI.doScrollTop(chat.data.chatElem.prop('scrollHeight'), 5);
         }
 	},
