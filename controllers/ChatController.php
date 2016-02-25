@@ -60,8 +60,8 @@ class ChatController extends Controller
                     ])
                 ],
                 'time' => [
-                    'hours' => date('H', $entry->created_at),
-                    'minutes' => date('i', $entry->created_at)
+                    'hours' => Yii::$app->formatter->asTime($entry->created_at, 'php:H'),
+                    'minutes' => Yii::$app->formatter->asTime($entry->created_at, 'php:i')
                 ]
             ];
         }
