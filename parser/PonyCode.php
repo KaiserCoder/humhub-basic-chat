@@ -14,7 +14,8 @@ class PonyCode
         'imageToHTML'    => '@\[IMG\](.*?)\[\/IMG\]@is',
         'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
         'smileyToHTML'   => '@:([\w^]+):@',
-        'shiraToHTML'    => '@ShiraCat@is'
+        'shiraToHTML'    => '@ShiraCat@is',
+        'hapToHTML'      => '@hap3@is'
     ];
 
     private static $colors = [
@@ -98,6 +99,11 @@ class PonyCode
 
         fclose($fp);
         return false;
+    }
+
+    private static function hapToHTML($match)
+    {
+        return '<img src="' . \Yii::getAlias('@web') . '/img/hap3.png" class="smiley"/>';
     }
 
     private static function shiraToHTML($match)
