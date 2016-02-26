@@ -13,7 +13,8 @@ class Assets extends AssetBundle
     ];
 
     public $js = [
-        'script.js'
+        'script.js',
+        'ponycode.js'
     ];
 
     public function init()

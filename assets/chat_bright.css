@@ -80,6 +80,22 @@
      direction:rtl;
 }
 
+.btn-rainbow {
+    background: #0af7f7;
+    background: linear-gradient(#ff0000, #ff8400, #ffea00, #00ff06, #0078ff, #a800ff) !important;
+    background: -ms-linear-gradient(#ff0000, #ff8400, #ffea00, #00ff06, #0078ff, #a800ff) !important;
+    background: -webkit-linear-gradient(#ff0000, #ff8400, #ffea00, #00ff06, #0078ff, #a800ff) !important;
+    background: -moz-linear-gradient(#ff0000, #ff8400, #ffea00, #00ff06, #0078ff, #a800ff) !important;
+}
+
+.markup {
+    padding: 10px;
+}
+
+.markup input {
+    margin: 10px 0;
+}
+
 .chat img.smiley {
     display: inline-block;
 }

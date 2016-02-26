@@ -31,7 +31,9 @@ class ChatController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('chatFrame', ['smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley')]);
+        return $this->render('chatFrame', [
+            'smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley')
+        ]);
     }
 
     /**
@@ -90,6 +92,8 @@ class ChatController extends Controller
 
         $response = [];
         foreach ($query->all() as $user) {
+            if ($user->guid)
+
             $response[] = [
                 'name' => $user->displayName,
                 'gravatar' => $user->getProfileImage()->getUrl(),

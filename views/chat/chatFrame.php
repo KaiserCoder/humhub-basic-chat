@@ -31,6 +31,18 @@ use humhub\compat\CHtml;
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default markup">
+                <button id="uButton" type="button" class="btn btn-default" style="text-decoration:underline">Souligné</button>
+                <button id="iButton" type="button" class="btn btn-default" style="font-style:italic">Italique</button>
+                <button id="bButton" type="button" class="btn btn-default" style="font-weight:bold">Gras</button>
+                <button id="rainbowButton" type="button" class="btn btn-rainbow">Rainbooow</button>
+                <button id="videoButton" type="button" class="btn btn-default"><i class="fa fa-arrow-down"></i> Video</button>
+                <button id="urlButton" type="button" class="btn btn-default"><i class="fa fa-arrow-down"></i> Url</button>
+                <button id="imgButton" type="button" class="btn btn-default"><i class="fa fa-arrow-down"></i> Image</button>
+
+                <div id="buttonInput"></div>
+            </div>
+
             <div class="panel panel-default smileys">
                 <?php foreach ($smileys as $smiley): ?>
                     <?php $base = basename($smiley) ?>
@@ -42,10 +54,3 @@ use humhub\compat\CHtml;
         </div>
     </div>
 </div>
-
-<script>
-    var smiley = function(smiley) {
-        var chatText = $('#chatText');
-        chatText.val(chatText.val() + smiley);
-    };
-</script>
