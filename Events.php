@@ -19,7 +19,7 @@ class Events extends Object
             'sortOrder' => 500,
             'url' => Url::to(['/ponychat/chat']),
             'icon' => '<i class="fa fa-weixin"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'ponychat' && Yii::$app->controller->id == 'view')
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'ponychat' && Yii::$app->controller->id == 'chat')
         ]);
     }
 
