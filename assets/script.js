@@ -22,12 +22,18 @@ var chat = {
 		$('#name').defaultText('Nickname');
 		$('#email').defaultText('Email (Gravatars are Enabled)');
 
+		var isMobile = false;
+
+		if ($('#chatUsers').css('display') == 'none') {
+			isMobile = true;
+		}
+
 		chat.data.jspAPI = '';
 		chat.data.chatElem = $('#chatLineHolder');
 		chat.data.scrollpaneAPI = chat.data.chatElem.niceScroll({
 			horizrailenabled : false,
 			autohidemode : false,
-			touchbehavior: $(window).width() <= 640
+			touchbehavior: isMobile
 		});
 
 		// Submitting a new chat entry:
