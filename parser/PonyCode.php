@@ -6,12 +6,12 @@ class PonyCode
 {
     private static $patterns = [
         'dictatorToHTML' => '@(HITLER|FUHRER|CASTRO|MUSOLINI|STALIN|MAO|KIM([\s\-]+)(JONG|JUNG|ILL|IL)|VALLS)@is',
-        'videoToHTML'    => '@\[VIDEO\](https\:\/\/www\.youtube\.com(.*?)?v=([\w\_\-]+)(.*?))\[/VIDEO\]@is',
+        'videoToHTML'    => '@\[VIDEO\][\s]*(https\:\/\/www\.youtube\.com(.*?)?v=([\w\_\-]+)(.*?))[\s]*\[/VIDEO\]@is',
         'baseToHTML'     => '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@is',
         'colorToHTML'    => '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is',
         'rainbowToHTML'  => '@\[RAINBOW\](.*)\[/RAINBOW\]@is',
 	    'mirrorToHTML'   => '@\[MIRROR\](.*?)\[\/MIRROR\]@is',
-        'imageToHTML'    => '@\[IMG\](.*?)\[\/IMG\]@is',
+        'imageToHTML'    => '@\[IMG\][\s]*(.*?)[\s]*\[\/IMG\]@is',
         'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
         'smileyToHTML'   => '@:([\w^]+):@',
         'shiraToHTML'    => '@ShiraCat@is',
