@@ -15,7 +15,7 @@ class PonyCode
         'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
         'smileyToHTML'   => '@:([\w^]+):@',
         'shiraToHTML'    => '@ShiraCat@is',
-        'hapToHTML'      => '@hap3@is'
+        'hapToHTML'      => '@haptwi@is'
     ];
 
     private static $colors = [
