@@ -18,7 +18,7 @@ use humhub\compat\CHtml;
                             <div class="tip"></div>
                             <form id="submitForm" action="<?= Url::toRoute('/ponychat/chat/submit') ?>" method="post">
                                 <div class="input-group">
-                                    <input id="chatText" type="text" name="chatText" placeholder="Message ..." class="form-control" autocomplete="off" maxlength="510">
+                                    <input id="chatText" type="text" name="chatText" placeholder="Message ..." class="form-control" autocomplete="off">
                                     <span class="input-group-btn">
                                       <button type="submit" value="Submit" class="btn btn-primary btn-flat">
                                           Envoyer
