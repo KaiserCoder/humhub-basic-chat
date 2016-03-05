@@ -1,6 +1,27 @@
 /* start - new modern flat style by Andreas Holzer / WebCrew */
 /* Main chat container */
 
+@media screen and (max-width: 640px) {
+    #chatUsers {
+        display: none;
+        visibility: hidden;
+    }
+
+    #chatLineHolder {
+        width: 100% !important;
+    }
+
+    .smileys {
+        display: none;
+        visibility: hidden;
+    }
+
+    .markup button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
 #chatContainer {
     width: 100%;
     position: relative;
@@ -66,7 +87,6 @@
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
-    filter: FlipH;
     -ms-filter: "FlipH";
 }
 
