@@ -26,7 +26,8 @@ var chat = {
 		chat.data.chatElem = $('#chatLineHolder');
 		chat.data.scrollpaneAPI = chat.data.chatElem.niceScroll({
 			horizrailenabled : false,
-			autohidemode : false
+			autohidemode : false,
+			touchbehavior: $(window).width() <= 640
 		});
 
 		// Submitting a new chat entry:
