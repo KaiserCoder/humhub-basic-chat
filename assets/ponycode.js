@@ -24,6 +24,9 @@ document.getElementById ("iButton").addEventListener (
 document.getElementById ("uButton").addEventListener (
     "click", uButtonEvent, false
 );
+document.getElementById ("spoilerButton").addEventListener (
+    "click", spoilerButtonEvent, false
+);
 
 function imgButtonEvent () {
     $("#imgText").remove();
@@ -99,6 +102,11 @@ function uButtonEvent () {
     $("#buttonInput").empty();
     var chatText =$('#chatText');
     chatText.val(chatText.val()+'[u][/u]');
+}
+function spoilerButtonEvent () {
+    $("#buttonInput").empty();
+    var chatText =$('#chatText');
+    chatText.val(chatText.val()+'[spoiler][/spoiler]');
 }
 function sendImgButtonEvent () {
     var chatText =$('#chatText');

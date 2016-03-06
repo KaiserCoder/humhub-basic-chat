@@ -36,6 +36,7 @@ use humhub\compat\CHtml;
                 <button id="iButton" type="button" class="btn btn-default" style="font-style:italic">Italique</button>
                 <button id="bButton" type="button" class="btn btn-default" style="font-weight:bold">Gras</button>
                 <button id="rainbowButton" type="button" class="btn btn-rainbow">Rainbooow</button>
+                <button id="spoilerButton" type="button" class="btn btn-default"><i class="fa fa-angle-right"></i> Spoiler</button>
                 <button id="videoButton" type="button" class="btn btn-default"><i class="fa fa-arrow-down"></i> Video</button>
                 <button id="urlButton" type="button" class="btn btn-default"><i class="fa fa-arrow-down"></i> Url</button>
                 <button id="imgButton" type="button" class="btn btn-default"><i class="fa fa-arrow-down"></i> Image</button>

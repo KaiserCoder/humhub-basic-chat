@@ -42,6 +42,10 @@ class Events extends Object
         $event->sender->view->registerjsVar('chat_GetChats', Url::to([
             '/ponychat/chat/chats'
         ]));
+
+        $event->sender->view->registerjsVar('chat_Ping', Url::to([
+            '/ponychat/chat/ping'
+        ]));
     }
 
     public static function onDailyCron($event)

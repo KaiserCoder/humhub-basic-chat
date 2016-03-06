@@ -2,8 +2,8 @@
 
 namespace humhub\modules\ponychat\controllers;
 
-use humhub\modules\user\components\User;
 use Yii;
+use yii\caching\ApcCache;
 use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use humhub\modules\ponychat\parser\PonyCode;
@@ -32,7 +32,8 @@ class ChatController extends Controller
     public function actionIndex()
     {
         return $this->render('chatFrame', [
-            'smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley')
+            'smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley'),
+            'user' => Yii::$app->user->getId()
         ]);
     }
 
@@ -110,5 +111,14 @@ class ChatController extends Controller
             'online' => count($response) . ' personnes connectée(s)',
             'users' => $response
         ];
+    }
+
+    public function actionPing()
+    {
+        if (Yii::$app->request->isGet) {
+            return;
+        }
+
+        $id = Yii::$app->request->post('id');
     }
 }

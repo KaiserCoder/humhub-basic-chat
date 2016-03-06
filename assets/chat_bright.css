@@ -27,6 +27,14 @@
     position: relative;
 }
 
+.spoiler {
+    display: none;
+    visibility: hidden;
+}
+
+.spoiler-button {
+    cursor: pointer;
+}
 
 /* Chats */
 

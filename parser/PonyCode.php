@@ -7,6 +7,7 @@ class PonyCode
     private static $patterns = [
         'dictatorToHTML' => '@(HITLER|FUHRER|CASTRO|MUSOLINI|STALIN|MAO|KIM([\s\-]+)(JONG|JUNG|ILL|IL)|VALLS)@is',
         'videoToHTML'    => '@\[VIDEO\][\s]*(https\:\/\/www\.youtube\.com(.*?)?v=([\w\_\-]+)(.*?))[\s]*\[/VIDEO\]@is',
+        'spoilerToHTML'  => '@\[SPOILER\](.*?)\[\/SPOILER\]@is',
         'baseToHTML'     => '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@is',
         'colorToHTML'    => '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is',
         'rainbowToHTML'  => '@\[RAINBOW\](.*)\[/RAINBOW\]@is',
@@ -35,7 +36,7 @@ class PonyCode
             self::parse($regex, [static::class, $method]);
         }
 
-        return preg_replace('#javascript([\s]*):#', 'ponyscript:', self::$string);
+        return self::$string;
     }
 
     private static function parse($pattern, array $callback)
@@ -99,6 +100,12 @@ class PonyCode
 
         fclose($fp);
         return false;
+    }
+
+    private static function spoilerToHTML($match)
+    {
+        $id = uniqid();
+        return '<a href="javascript:spoiler(\'' . $id . '\')" class="spoiler-button"><i id="l' . $id . '" class="fa fa-angle-right"></i> Spoiler</a><div id="' . $id . '" class="spoiler">' . $match[1] . '</div>';
     }
 
     private static function hapToHTML($match)
@@ -165,7 +172,7 @@ class PonyCode
 
     private static function urlToHTML($match)
     {
-        return '<a href="' . $match[1] . '" target="_blank">' . self::shortenURL($match[1]) . '</a>';
+        return '<a href="' . preg_replace('#javascript([\s]*):#', 'ponyscript:', $match[1]) . '" target="_blank">' . self::shortenURL($match[1]) . '</a>';
     }
 
     private static function imageToHTML($match)
