@@ -6,12 +6,12 @@ class PonyCode
 {
     private static $patterns = [
         'dictatorToHTML' => '@(HITLER|FUHRER|CASTRO|MUSOLINI|STALIN|MAO|KIM([\s\-]+)(JONG|JUNG|ILL|IL)|VALLS)@is',
-        'videoToHTML'    => '@\[VIDEO\][\s]*(https\:\/\/www\.youtube\.com(.*?)?v=([\w\_\-]+)(.*?))[\s]*\[/VIDEO\]@is',
+        'videoToHTML'    => '@\[VIDEO\][\s]*(http(.*?)youtube\.com(.*?)?v=([\w\_\-]+)(.*?))[\s]*\[/VIDEO\]@is',
         'spoilerToHTML'  => '@\[SPOILER\](.*?)\[\/SPOILER\]@is',
         'baseToHTML'     => '@\[(B|I|U|PRE|STRIKE)\](.*)\[/\1\]@is',
         'colorToHTML'    => '@\[COLOR=([\w#]+)\](.*)\[/COLOR\]@is',
         'rainbowToHTML'  => '@\[RAINBOW\](.*)\[/RAINBOW\]@is',
-	    'mirrorToHTML'   => '@\[MIRROR\](.*?)\[\/MIRROR\]@is',
+	'mirrorToHTML'   => '@\[MIRROR\](.*?)\[\/MIRROR\]@is',
         'imageToHTML'    => '@\[IMG\][\s]*(.*?)[\s]*\[\/IMG\]@is',
         'urlToHTML'      => '@\[URL\](.*?)\[\/URL\]@is',
         'smileyToHTML'   => '@:([\w^]+):@',
@@ -151,7 +151,7 @@ class PonyCode
 
     private static function videoToHTML($match)
     {
-        return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $match[3] . '" frameborder="0" allowfullscreen></iframe>';
+        return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $match[4] . '" frameborder="0" allowfullscreen></iframe>';
     }
 
     private static function colorToHTML($match)
