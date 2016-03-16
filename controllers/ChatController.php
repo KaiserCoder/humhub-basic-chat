@@ -3,10 +3,9 @@
 namespace humhub\modules\ponychat\controllers;
 
 use Yii;
-use yii\caching\ApcCache;
-use yii\helpers\FileHelper;
 use yii\helpers\Url;
-use humhub\modules\ponychat\parser\PonyCode;
+use yii\helpers\FileHelper;
+use humhub\modules\ponychat\libs\PonyCode;
 
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;

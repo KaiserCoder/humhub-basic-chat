@@ -20,11 +20,13 @@ class Assets extends AssetBundle
 
     public function init()
     {
-        $theme = Setting::Get('theme', 'ponychat');
+        if (\Yii::$app->controller->id === 'chat') {
+            $theme = Setting::Get('theme', 'ponychat');
 
-        if ($theme) $this->css = [$theme];
-        
-        $this->sourcePath = dirname(__FILE__) . '/assets';
-        parent::init();
+            if ($theme) $this->css = [$theme];
+
+            $this->sourcePath = dirname(__FILE__) . '/assets';
+            parent::init();
+        }
     }
 }
