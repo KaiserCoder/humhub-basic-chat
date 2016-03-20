@@ -41,6 +41,7 @@ use yii\helpers\Url;
 
         var awesomeplete = new Awesomplete(document.getElementById('chatText'), {
             minChars: 1,
+            maxItems: 3,
 
             list: <?= $list ?>,
 
