@@ -2,6 +2,12 @@
 use yii\helpers\Url;
 ?>
 
+<style>
+    html {
+        overflow: hidden !important;
+    }
+</style>
+
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
