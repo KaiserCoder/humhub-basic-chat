@@ -30,14 +30,20 @@ class ChatController extends Controller
         ];
     }
 
+    private static function clean($text)
+    {
+        return strtolower(preg_replace('#\s*#', null, $text));
+    }
+
     private function checkBan()
     {
         $banned = Setting::Get('banned', 'ponychat');
 
         $bannedUsers = explode(' ', $banned);
+        array_map([static::class, 'clean'], $bannedUsers);
 
-        if (in_array(Yii::$app->getUser()->getIdentity()['username'], $bannedUsers)) {
-            die();
+        if (in_array(self::clean(Yii::$app->getUser()->getIdentity()['username']), $bannedUsers)) {
+            exit;
         }
     }
 
