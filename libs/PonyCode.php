@@ -19,6 +19,10 @@ class PonyCode
             'pattern' => '#\[img\][\s]*(.*)[\s]*\[\/img\]#is',
             'child'   => false
         ],
+        'urlToHTML' => [
+            'pattern' => '#\[url(=(https?\:\/\/[\H]+))?\](.*)\[\/url\]#is',
+            'child'   => false
+        ],
         'dictatorToHTML' => [
             'pattern' => '#(hitler|fuhrer|castro|musolini|staline?|mao|kim([\s\-]+)(jong|jung|ill?)|valls)#is',
             'child'   => true
@@ -38,10 +42,6 @@ class PonyCode
         'mirrorToHTML' => [
             'pattern' => '#\[mirror\](.*)\[\/mirror\]#is',
             'child'   => true
-        ],
-        'urlToHTML' => [
-            'pattern' => '#\[url(=(https?\:\/\/[\H]+))?\](.*)\[\/url\]#is',
-            'child'   => false
         ],
         'smileyToHTML' => [
             'pattern' => '#:([\w^]+):#',
@@ -83,10 +83,10 @@ class PonyCode
         {
             self::$string = preg_replace_callback($regex['pattern'], function($matches) use($regex, $callback)
             {
-                $return = call_user_func_array($callback, [$matches]);
+                $return = call_user_func_array($callback, [filter_var_array($matches, FILTER_SANITIZE_FULL_SPECIAL_CHARS)]);
 
                 if (!$regex['child']) {
-                    $return = preg_replace('#\[(.*)\]#', null, $return);
+                    $return = preg_replace('#\[(.*)\](.*)\[\/\1\]#', null, $return);
                 }
 
                 return $return;
@@ -100,7 +100,7 @@ class PonyCode
         $output = preg_replace('#^(http|ftp)s?://#', null, $output);
 
         if (strlen($output) > 50) {
-            $output = substr($output, 0, strpos($output, '/') + 5) . '...';
+            $output = substr($output, 0, 50) . '...';
         }
 
         return $output;

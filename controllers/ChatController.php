@@ -3,6 +3,7 @@
 namespace humhub\modules\ponychat\controllers;
 
 use Yii;
+use yii\caching\ApcCache;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
 
@@ -18,6 +19,20 @@ use yii\web\View;
 
 class ChatController extends Controller
 {
+
+    private static $markups = [
+        '[rainbow][/rainbow]',
+        '[video][/video]',
+        '[img][/img]',
+        '[url][/url]',
+        '[spoiler][/spoiler]',
+        '[b][/b]',
+        '[i][/i]',
+        '[u][/u]',
+        '[pre][/pre]',
+        '[color=red][/color]',
+        '[mirror][/mirror]'
+    ];
 
     public function behaviors()
     {
@@ -51,8 +66,33 @@ class ChatController extends Controller
             '/ponychat/chat/ping'
         ]));
 
+        $list = null;
+
+        $cache = new ApcCache();
+        $cache->useApcu = true;
+
+        if ($cache->exists('list')) {
+            $list = $cache->get('list');
+        } else {
+            $list = '[';
+
+            foreach (self::$markups as $markup) {
+                $list .= '"' . $markup . '",';
+            }
+
+            $smileys = FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley');
+
+            foreach ($smileys as $smiley) {
+                $list .= '":' . str_replace('.png', ':', basename($smiley)) . '",';
+            }
+
+            $list .= ']';
+
+            $cache->set('list', $list, 300);
+        }
+
         return $this->render('chatFrame', [
-            'smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley')
+            'list' => $list
         ]);
     }
 

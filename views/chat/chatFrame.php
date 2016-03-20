@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Url;
-use humhub\compat\CHtml;
 ?>
 
 <div class="container">
@@ -16,12 +15,9 @@ use humhub\compat\CHtml;
                     <div class="tip"></div>
                     <form id="submitForm" action="<?= Url::toRoute('/ponychat/chat/submit') ?>" method="post">
                         <div class="input-group">
-                            <input id="chatText" type="text" name="chatText" placeholder="Message ..." data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" data-multiple/>
+                            <input id="chatText" type="text" name="chatText" placeholder="Message ..." data-multiple/>
                             <span class="input-group-btn">
-                                <button type="submit" value="Submit" class="btn btn-primary btn-flat">
-                                    Envoyer
-                                    <span class="spinner fa fa-spinner fa-spin hidden"></span>
-                                </button>
+                                <button id="chatSubmit" type="submit" value="Submit" class="btn btn-primary btn-flat">Envoyer <span class="spinner fa fa-spinner fa-spin hidden"></span></button>
                             </span>
                         </div>
                     </form>
@@ -32,17 +28,36 @@ use humhub\compat\CHtml;
 </div>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
-        var input = document.getElementById('chatText');
-        new Awesomplete(input, {
+
+        var previous = 0;
+
+        var awesomeplete = new Awesomplete(document.getElementById('chatText'), {
+            minChars: 1,
+
+            list: <?= $list ?>,
+
             filter: function(text, input) {
                 return Awesomplete.FILTER_CONTAINS(text, input.match(/[^\s]*$/)[0]);
             },
 
             replace: function(text) {
-                var before = this.input.value.match(/^.+\s*|/)[0];
+                var before = this.input.value.match(/^.+\s|/)[0];
                 this.input.value = before + text;
+                this.minChars = this.input.value.length + 2;
             }
+        });
+
+        $('#chatText').on('change keyup copy paste cut', function() {
+            if ($(this).val().length < previous)
+                awesomeplete.minChars = 1;
+            else
+                previous = $(this).val().length;
+        });
+
+        $('#chatSubmit').click(function() {
+            awesomeplete.minChars = 1;
         });
     });
 </script>
