@@ -5,6 +5,8 @@ namespace humhub\modules\ponychat\controllers;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
+
+use humhub\modules\ponychat\Assets;
 use humhub\modules\ponychat\libs\PonyCode;
 
 use humhub\components\Controller;
@@ -12,6 +14,7 @@ use humhub\components\behaviors\AccessControl;
 
 use humhub\modules\user\components\Session;
 use humhub\modules\ponychat\models\UserChatMessage;
+use yii\web\View;
 
 class ChatController extends Controller
 {
@@ -30,10 +33,33 @@ class ChatController extends Controller
      */
     public function actionIndex()
     {
+        $this->view->registerAssetBundle(Assets::className());
+
+        $this->registerJsVar('chat_ListUsers', Url::to([
+            '/ponychat/chat/users'
+        ]));
+
+        $this->registerJsVar('chat_Submit', Url::to([
+            '/ponychat/chat/submit'
+        ]));
+
+        $this->registerJsVar('chat_GetChats', Url::to([
+            '/ponychat/chat/chats'
+        ]));
+
+        $this->registerJsVar('chat_Ping', Url::to([
+            '/ponychat/chat/ping'
+        ]));
+
         return $this->render('chatFrame', [
-            'smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley'),
-            'user' => Yii::$app->user->getId()
+            'smileys' => FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley')
         ]);
+    }
+
+    private function registerJsVar($name, $value)
+    {
+        $jsCode = "var " . $name . " = '" . addslashes($value) . "';\n";
+        $this->view->registerJs($jsCode, View::POS_HEAD, $name);
     }
 
     /**
@@ -112,12 +138,4 @@ class ChatController extends Controller
         ];
     }
 
-    public function actionPing()
-    {
-        if (Yii::$app->request->isGet) {
-            return;
-        }
-
-        $id = Yii::$app->request->post('id');
-    }
 }

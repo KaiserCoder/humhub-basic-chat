@@ -26,14 +26,12 @@ class AdminController extends Controller
         $form = new SettingsForm();
         if ($form->load(Yii::$app->request->post())) {
             if ($form->validate()) {
-                Setting::Set('theme', $form->theme, 'ponychat');
-                Setting::Set('timeout', $form->timeout, 'ponychat');
+                Setting::Set('banned', $form->banned, 'ponychat');
                 
                 Yii::$app->session->setFlash('data-saved', 'Sauvegardé');
             }
         } else {
-            $form->theme = Setting::Get('theme', 'ponychat');
-            $form->timeout = Setting::Get('timeout', 'ponychat');
+            $form->banned = Setting::Get('banned', 'ponychat');
         }
         
         return $this->render('index', [
@@ -41,11 +39,4 @@ class AdminController extends Controller
         ]);
     }
 
-    public static function getThemes()
-    {
-        return [
-            'chat_bright.css' => 'Light theme',
-            'chat_dark.css' => 'Dark theme'
-        ];
-    }
 }

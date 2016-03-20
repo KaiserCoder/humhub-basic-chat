@@ -23,31 +23,6 @@ class Events extends Object
         ]);
     }
 
-    public static function addChatFrame($event)
-    {
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
-        $event->sender->view->registerAssetBundle(Assets::className());
-
-        $event->sender->view->registerjsVar('chat_ListUsers', Url::to([
-            '/ponychat/chat/users'
-        ]));
-
-        $event->sender->view->registerjsVar('chat_Submit', Url::to([
-            '/ponychat/chat/submit'
-        ]));
-
-        $event->sender->view->registerjsVar('chat_GetChats', Url::to([
-            '/ponychat/chat/chats'
-        ]));
-
-        $event->sender->view->registerjsVar('chat_Ping', Url::to([
-            '/ponychat/chat/ping'
-        ]));
-    }
-
     public static function onDailyCron($event)
     {
         $controller = $event->sender;

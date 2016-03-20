@@ -11,14 +11,10 @@ use humhub\modules\ponychat\controllers\AdminController;
 		<?php $form = CActiveForm::begin(['id' => 'hhc-settings-form']); ?>
 			<?=$form->errorSummary($model); ?>
 			<div class="form-group">
-				<?=$form->labelEx($model, 'theme'); ?>
-				<?=$form->dropDownList($model, 'theme', AdminController::getThemes(), ['class' => 'form-control', 'readonly' => Setting::IsFixed('theme', 'ponychat')]); ?>
+				<?=$form->labelEx($model, 'banned'); ?>
+				<?=$form->textField($model, 'banned', ['class' => 'form-control', 'readonly' => Setting::IsFixed('banned', 'ponychat')]); ?>
 			</div>
-			<div class="form-group">
-				<?=$form->labelEx($model, 'timeout'); ?>
-				<?=$form->textField($model, 'timeout', ['class' => 'form-control', 'readonly' => Setting::IsFixed('timeout', 'ponychat')]); ?>
-			</div>
-			<p class="help-block">Nombre de jours après lesquels les messages seront supprimés</p>
+			<p class="help-block">Noms des utilisateurs bannis. Ils doivent être séparés d'un espace.</p>
 			<?= CHtml::submitButton('Sauvegarder', ['class' => 'btn btn-primary']); ?>
 			<?= DataSaved::widget(); ?>
 		<?php CActiveForm::end(); ?>

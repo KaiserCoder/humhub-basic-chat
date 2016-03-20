@@ -24,14 +24,6 @@ return [
             'event' => TopMenu::EVENT_INIT,
             'callback' => [
                 'humhub\modules\ponychat\Events',
-                'addChatFrame'
-            ]
-        ],
-        [
-            'class' => TopMenu::className(),
-            'event' => TopMenu::EVENT_INIT,
-            'callback' => [
-                'humhub\modules\ponychat\Events',
                 'onTopMenuInit'
             ]
         ],

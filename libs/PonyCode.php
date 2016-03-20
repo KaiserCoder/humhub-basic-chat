@@ -41,7 +41,7 @@ class PonyCode
         ],
         'urlToHTML' => [
             'pattern' => '#\[url(=(https?\:\/\/[\H]+))?\](.*)\[\/url\]#is',
-            'child'   => true
+            'child'   => false
         ],
         'smileyToHTML' => [
             'pattern' => '#:([\w^]+):#',

@@ -6,40 +6,23 @@ use yii\base\Model;
 
 class SettingsForm extends Model
 {
-    public $theme;
-    public $timeout;
+    public $banned;
 
     public function rules()
     {
         return [
             [
                 [
-                    'theme',
-                    'timeout'
+                    'banned'
                 ],
                 'safe'
             ],
             [
                 [
-                    'theme',
-                    'timeout'
-                ],
-                'required'
-            ],
-            [
-                [
-                    'theme'
+                    'banned'
                 ],
                 'string',
                 'max' => 255
-            ],
-            [
-                [
-                    'timeout'
-                ],
-                'integer',
-                'min' => 0,
-                'max' => '365'
             ]
         ];
     }
@@ -47,8 +30,7 @@ class SettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'theme' => 'Theme',
-            'timeout' => 'Timeout'
+            'banned' => 'Utilisateurs bannis',
         ];
     }
 }
