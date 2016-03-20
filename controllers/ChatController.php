@@ -3,10 +3,12 @@
 namespace humhub\modules\ponychat\controllers;
 
 use Yii;
-use yii\caching\ApcCache;
+use yii\web\View;
 use yii\helpers\Url;
+use yii\caching\ApcCache;
 use yii\helpers\FileHelper;
 
+use humhub\models\Setting;
 use humhub\modules\ponychat\Assets;
 use humhub\modules\ponychat\libs\PonyCode;
 
@@ -15,24 +17,9 @@ use humhub\components\behaviors\AccessControl;
 
 use humhub\modules\user\components\Session;
 use humhub\modules\ponychat\models\UserChatMessage;
-use yii\web\View;
 
 class ChatController extends Controller
 {
-
-    private static $markups = [
-        '[rainbow][/rainbow]',
-        '[video][/video]',
-        '[img][/img]',
-        '[url][/url]',
-        '[spoiler][/spoiler]',
-        '[b][/b]',
-        '[i][/i]',
-        '[u][/u]',
-        '[pre][/pre]',
-        '[color=red][/color]',
-        '[mirror][/mirror]'
-    ];
 
     public function behaviors()
     {
@@ -41,6 +28,17 @@ class ChatController extends Controller
                 'class' => AccessControl::className()
             ]
         ];
+    }
+
+    private function checkBan()
+    {
+        $banned = Setting::Get('banned', 'ponychat');
+
+        $bannedUsers = explode(' ', $banned);
+
+        if (in_array(Yii::$app->getUser()->getIdentity()['username'], $bannedUsers)) {
+            die();
+        }
     }
 
     /**
@@ -66,33 +64,25 @@ class ChatController extends Controller
             '/ponychat/chat/ping'
         ]));
 
-        $list = null;
+        $smileys = null;
 
         $cache = new ApcCache();
         $cache->useApcu = true;
 
-        if ($cache->exists('list')) {
-            $list = $cache->get('list');
+        if ($cache->exists('smileys')) {
+            $smileys = $cache->get('smileys');
         } else {
-            $list = '[';
+            $files = FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley');
 
-            foreach (self::$markups as $markup) {
-                $list .= '"' . $markup . '",';
+            foreach ($files as $smiley) {
+                $smileys[] = basename($smiley);
             }
 
-            $smileys = FileHelper::findFiles(Yii::getAlias('@webroot') . '/img/smiley');
-
-            foreach ($smileys as $smiley) {
-                $list .= '":' . str_replace('.png', ':', basename($smiley)) . '",';
-            }
-
-            $list .= ']';
-
-            $cache->set('list', $list, 300);
+            $cache->set('smileys', $smileys, 300);
         }
 
         return $this->render('chatFrame', [
-            'list' => $list
+            'smileys' => $smileys
         ]);
     }
 
@@ -107,6 +97,8 @@ class ChatController extends Controller
      */
     public function actionChats()
     {
+        $this->checkBan();
+
         $last_id = Yii::$app->request->get('lastID', 0);
         $query = UserChatMessage::find()->where([
             '>',
@@ -141,6 +133,8 @@ class ChatController extends Controller
 
     public function actionSubmit()
     {
+        $this->checkBan();
+
         if (($message_text = Yii::$app->request->post('chatText', null)) == null) {
             return;
         }
@@ -154,6 +148,8 @@ class ChatController extends Controller
 
     public function actionUsers()
     {
+        $this->checkBan();
+
         $query = Session::getOnlineUsers();
 
         $response = [];

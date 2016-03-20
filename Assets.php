@@ -8,12 +8,10 @@ class Assets extends AssetBundle
 {
 
     public $css = [
-        'chat.css',
-        'awesomplete.css'
+        'chat.css'
     ];
 
     public $js = [
-        'awesomplete.min.js',
         'script.js',
         'ponycode.js',
         'spoiler.js'
