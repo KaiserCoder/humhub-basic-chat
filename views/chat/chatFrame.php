@@ -15,9 +15,9 @@ use yii\helpers\Url;
                     <div class="tip"></div>
                     <form id="submitForm" action="<?= Url::toRoute('/ponychat/chat/submit') ?>" method="post">
                         <div class="input-group">
-                            <input id="chatText" type="text" name="chatText" placeholder="Message ..." data-multiple/>
+                            <input id="chatText" type="text" class="form-control" name="chatText" placeholder="Message ..." autocomplete="off"/>
                             <span class="input-group-btn">
-                                <button id="chatSubmit" type="submit" value="Submit" class="btn btn-primary btn-flat">Envoyer <span class="spinner fa fa-spinner fa-spin hidden"></span></button>
+                                <button type="submit" value="Submit" class="btn btn-primary btn-flat">Envoyer <span class="spinner fa fa-spinner fa-spin hidden"></span></button>
                             </span>
                         </div>
                     </form>

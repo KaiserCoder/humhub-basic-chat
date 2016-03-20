@@ -201,17 +201,6 @@ img.smiley {
     font: 13px/26px Calibri,Arial,sans-serif;
 }
 
-input#chatText {
-    /* The chat submit text field */
-    margin-top: 4px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-}
-
-.awesomplete {
-    width: 100%;
-}
-
 
 /* Overloading the default styles of jScrollPane */
 
